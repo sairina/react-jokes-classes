@@ -19,7 +19,8 @@ class JokeList extends React.Component {
 
   async componentDidMount() {
     try {
-      console.log(this.props.numJokesToGet)
+      // Alissa note: a good way to keep your code clean is by abstracting
+      // out chunks of code that accomplish a certain task (ie, call API)
       const apiJokes = await this._getJokes(this.props.numJokesToGet);
       const jokes = apiJokes.map(joke => { return { ...joke, votes: 0 } });
       this.setState({ jokes });
@@ -54,8 +55,12 @@ class JokeList extends React.Component {
     // }
   }
 
+  // Alissa note: preceding a function with '_' indicates that it's a private method
+  // and tells other developers (and you) that it shouldn't be accessed externally
   async _getJokes(numJokes) {
     const headers = { Accept: "application/json" };
+    // Alissa note: using the API as the documentation specifies, you circumvent 
+    // the need to accommodate the case of duplicates all together
     const path = `https://icanhazdadjoke.com/search?limit=${numJokes}`;
     const { data } = await axios.get(path, { headers });
     return data.results;
